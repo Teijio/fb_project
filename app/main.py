@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
-from app.api.facebook_data import router
+from app.api.request_info import router
 from app.core.config import settings
 
 app = FastAPI(title=settings.app_title)

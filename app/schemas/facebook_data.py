@@ -1,9 +1,9 @@
 from pydantic import BaseModel
 
 
-class FacebookDataBase(BaseModel):
-    # ip_address: str
-    userAgent: str
+class RequestInfoBase(BaseModel):
+    ip_address: str
+    user_agent: str
     pixel: str
     token: str
     fbclid: str = None
@@ -11,5 +11,5 @@ class FacebookDataBase(BaseModel):
     fbp: str
 
 
-class FacebookDataCreate(FacebookDataBase):
+class RequestInfoCreate(RequestInfoBase):
     pass
