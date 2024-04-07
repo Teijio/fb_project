@@ -1,13 +1,12 @@
 from app.core.database import AsyncSession
-from app.models.request_info import RequestInfo
-from app.schemas.facebook_data import RequestInfoCreate
+from app.models.activity_log import ActivityLog
+from app.schemas.facebook_data import ActivityLogCreate
 
 
-async def create_request_info(new_request_info: RequestInfoCreate) -> RequestInfo:
-    print(new_request_info)
-    new_request_info = new_request_info.model_dump()
-    print(new_request_info)
-    return new_request_info
+async def create_activity_log(new_activity_log: ActivityLogCreate) -> ActivityLog:
+    db_activity_log = ActivityLog(**new_activity_log.model_dump())
+    print(db_activity_log)
+    return new_activity_log
     # # Создаём объект модели MeetingRoom.
     # # В параметры передаём пары "ключ=значение", для этого распаковываем словарь.
     # db_room = MeetingRoom(**new_room_data)
