@@ -14,8 +14,6 @@ class CRUDBase:
     async def get(self, obj: ipaddress, session: AsyncSession) -> ActivityLog:
         db_obj = await session.execute(select(self.model).where(self.model.ip_address == obj))
         db_obj = db_obj.scalar()
-        if db_obj is None:
-            raise HTTPException(status_code=404, detail="Объект не найден")
         return db_obj
 
     async def create(self, obj: ActivityLogCreate, session: AsyncSession) -> ActivityLog:
@@ -29,3 +27,9 @@ class CRUDBase:
         result = await session.execute(select(ActivityLog).where(ActivityLog.ip_address == obj))
         existing_ip_address = result.fetchone()
         return not existing_ip_address
+
+
+
+# db_room = await session.get(MeetingRoom, room_id)
+#     return db_room 
+# Если объекта с таким id не существует, то, как и в предыдущем варианте кода, вернётся None.
