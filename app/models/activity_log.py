@@ -18,6 +18,5 @@ class ActivityLog(Base):
 
 
 class PixelToken(Base):
-    pixel = Column(String(1000), unique=True, nullable=False)
+    pixel = Column(String(1000), unique=True, nullable=False, index=True)
     token = Column(String(1000), nullable=False)
-

@@ -1,35 +1,23 @@
-import ipaddress
-from fastapi import HTTPException
-
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.models.activity_log import ActivityLog
-from app.schemas.facebook_data import ActivityLogCreate
 
 
 class CRUDBase:
     def __init__(self, model):
         self.model = model
 
-    async def get(self, obj: ipaddress, session: AsyncSession) -> ActivityLog:
-        db_obj = await session.execute(select(self.model).where(self.model.ip_address == obj))
-        db_obj = db_obj.scalar()
-        return db_obj
+    async def get_by_attribute(
+        self, attr_name: str, attr_value: str, session: AsyncSession
+    ):
+        attr = getattr(self.model, attr_name)
+        db_obj = await session.execute(select(self.model).where(attr == attr_value))
+        return db_obj.scalars().first()
 
-    async def create(self, obj: ActivityLogCreate, session: AsyncSession) -> ActivityLog:
+    async def create(self, obj, session: AsyncSession) -> ActivityLog:
         obj_data = self.model(**obj.model_dump())
         session.add(obj_data)
         await session.commit()
         await session.refresh(obj_data)
         return obj_data
-
-    async def is_unique_ip_address(self, obj: ipaddress, session: AsyncSession) -> bool:
-        result = await session.execute(select(ActivityLog).where(ActivityLog.ip_address == obj))
-        existing_ip_address = result.fetchone()
-        return not existing_ip_address
-
-
-
-# db_room = await session.get(MeetingRoom, room_id)
-#     return db_room 
-# Если объекта с таким id не существует, то, как и в предыдущем варианте кода, вернётся None.

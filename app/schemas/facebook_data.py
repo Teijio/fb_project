@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Field, AnyHttpUrl
-from pydantic.networks import IPvAnyAddress
+from pydantic import AnyHttpUrl, BaseModel, Field
 from pydantic.json_schema import SkipJsonSchema
+from pydantic.networks import IPvAnyAddress
 
 
 class ActivityLogCreate(BaseModel):
@@ -13,7 +13,7 @@ class ActivityLogCreate(BaseModel):
     fbp: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class PixelTokenSchema(BaseModel):
@@ -21,15 +21,11 @@ class PixelTokenSchema(BaseModel):
     token: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class KeitaroStatusIP(BaseModel):
-    url: AnyHttpUrl = Field(..., example="https://adnanhaider.site/keitaro?&status={status}&ip={ip}")
-
-
-# @validator('name')
-# def name_cannot_be_null(cls, value):
-# if value is None:
-# raise ValueError('Имя переговорки не может быть пустым!')
-# return value
+    url: AnyHttpUrl = Field(
+        ...,
+        example="https://adnanhaider.site/keitaro?&status=lead&ip=127.0.0.1",
+    )
