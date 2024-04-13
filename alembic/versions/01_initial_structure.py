@@ -34,9 +34,7 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_activitylog_ip_address"), "activitylog", ["ip_address"], unique=True
-    )
+    op.create_index(op.f("ix_activitylog_ip_address"), "activitylog", ["ip_address"], unique=True)
     op.create_table(
         "pixeltoken",
         sa.Column("pixel", sa.String(length=1000), nullable=False),

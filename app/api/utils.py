@@ -3,9 +3,7 @@ import time
 from app.models import ActivityLog
 
 
-def generate_facebook_event_data(
-    activity_log: ActivityLog, status: str, value: int = 200
-):
+def generate_facebook_event_data(activity_log: ActivityLog, status: str, value: int = 200):
     current_timestamp = int(time.time())
     user_data = {
         "client_ip_address": str(activity_log.ip_address),

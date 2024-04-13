@@ -5,12 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.httpx_client import Singletonhttpx
 from app.api.utils import generate_facebook_event_data
-from app.api.validators import (
-    check_unique_ip_address,
-    extract_keitaro_info,
-    get_activity_log,
-    get_pixel_token,
-)
+from app.api.validators import (check_unique_ip_address, extract_keitaro_info,
+                                get_activity_log, get_pixel_token)
 from app.core.database import get_async_session
 from app.crud.activity_log import activity_log_crud
 from app.schemas.facebook_data import ActivityLogCreate, KeitaroStatusIP

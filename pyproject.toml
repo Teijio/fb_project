@@ -5,14 +5,29 @@ description = ""
 authors = ["Teijio <ridpfrep@yandex.ru>"]
 readme = "README.md"
 
+[tool.black]
+line-length = 119
+exclude = '''
+    ^/.github
+    | ^/infra
+    | .*/migrations
+    | .*/settings/
+    | ^settings.py
+    | ^/venv
+    | ^/.venv
+    | ^/.env
+'''
+
 [tool.poetry.dependencies]
 python = "^3.12.2"
-fastapi = {extras = ["all"], version = "^0.110.1"}
+fastapi = { extras = ["all"], version = "^0.110.1" }
 sqlalchemy = "^2.0.29"
 alembic = "^1.13.1"
 asyncpg = "^0.29.0"
-httpx = {extras = ["http2"], version = "^0.27.0"}
+httpx = { extras = ["http2"], version = "^0.27.0" }
 isort = "^5.13.2"
+pytest = "^8.1.1"
+pytest-httpx = "^0.30.0"
 
 
 [build-system]

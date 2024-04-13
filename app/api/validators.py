@@ -21,12 +21,8 @@ async def get_pixel_token(pixel: str, session: AsyncSession) -> Optional[PixelTo
     return pixel_token
 
 
-async def get_activity_log(
-    ip_address: ipaddress, session: AsyncSession
-) -> Optional[ActivityLog]:
-    activity_log = await activity_log_crud.get_by_attribute(
-        "ip_address", ip_address, session
-    )
+async def get_activity_log(ip_address: ipaddress, session: AsyncSession) -> Optional[ActivityLog]:
+    activity_log = await activity_log_crud.get_by_attribute("ip_address", ip_address, session)
     if activity_log is None:
         raise HTTPException(status_code=404, detail="Запись с данным IP не найдена.")
     return activity_log
@@ -51,7 +47,5 @@ def extract_keitaro_info(
     try:
         formatted_ip_address = ipaddress.ip_address(ip_address)
     except ipaddress.AddressValueError as e:
-        raise HTTPException(
-            status_code=400, detail="Неверный формат IP адреса: " + str(e)
-        )
+        raise HTTPException(status_code=400, detail="Неверный формат IP адреса: " + str(e))
     return formatted_ip_address, status

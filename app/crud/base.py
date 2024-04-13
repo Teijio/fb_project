@@ -8,9 +8,7 @@ class CRUDBase:
     def __init__(self, model):
         self.model = model
 
-    async def get_by_attribute(
-        self, attr_name: str, attr_value: str, session: AsyncSession
-    ):
+    async def get_by_attribute(self, attr_name: str, attr_value: str, session: AsyncSession):
         attr = getattr(self.model, attr_name)
         db_obj = await session.execute(select(self.model).where(attr == attr_value))
         return db_obj.scalars().first()
