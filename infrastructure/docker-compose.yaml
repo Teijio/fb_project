@@ -23,19 +23,20 @@ services:
     networks:
       - backend
 
-  # backend:
-  #   build: ../.
-  #   container_name: fb_app
-  #   restart: always
-  #   ports:
-  #     - "80:80"
-  #   env_file: ../.env
-  #   environment:
-  #     DATABASE_URL: ${DATABASE_URL}
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - backend
+  backend:
+    build: ../.
+    container_name: fb_app
+    restart: always
+    # image: ridpfrep/fb_project:latest
+    ports:
+      - "81:7070"
+    env_file: ../.env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - db
+    networks:
+      - backend
 
 volumes:
   fb_pgdata:
