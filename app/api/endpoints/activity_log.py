@@ -36,4 +36,4 @@ async def find_request_info(
     pixel_token = await get_pixel_token(activity_log.pixel, session)
     facebook_data = generate_facebook_event_data(activity_log, status)
     result = await Singletonhttpx.send_data_to_facebook(pixel_token.pixel, pixel_token.token, facebook_data)
-    print(result)
+    return result
