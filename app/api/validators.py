@@ -35,9 +35,9 @@ async def check_unique_ip_address(ip_address: ipaddress, session: AsyncSession) 
 
 
 def extract_keitaro_info(
-    info_url: KeitaroStatusIP,
+    info_url: str,
 ) -> tuple[Union[ipaddress.IPv4Address, ipaddress.IPv6Address], str]:
-    parsed_info_url = parse_qs(info_url.url.query)
+    parsed_info_url = parse_qs(info_url)
     ip_address = parsed_info_url.get("ip", [None])[0]
     status = parsed_info_url.get("status", [None])[0]
     if ip_address is None or status is None:

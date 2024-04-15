@@ -6,7 +6,7 @@ from pydantic.networks import IPvAnyAddress
 class ActivityLogCreate(BaseModel):
     ip_address: SkipJsonSchema[IPvAnyAddress] = None
     user_agent: str = Field(..., alias="userAgent")
-    pixel: str
+    pixel: str = None
     token: str
     fbclid: str
     fbc: str
@@ -25,6 +25,7 @@ class PixelTokenSchema(BaseModel):
 
 
 class KeitaroStatusIP(BaseModel):
+    url: str
     url: AnyHttpUrl = Field(
         ...,
         example="https://adnanhaider.site/keitaro?&status=lead&ip=127.0.0.1",
