@@ -14,10 +14,9 @@ def generate_facebook_event_data(activity_log: ActivityLog, status: str, value: 
     if status == "lead":
         event_name = "Lead"
         action_source = "chat"
-    else:
+    elif status == "sale":
         event_name = "Purchase"
         action_source = "website"
-        user_data.update({"custom_data": {"currency": "USD", "value": value}})
 
     event_data = {
         "data": [
@@ -29,4 +28,6 @@ def generate_facebook_event_data(activity_log: ActivityLog, status: str, value: 
             }
         ]
     }
+    if status == "sale":
+        event_data["data"][0]["custom_data"] = {"currency": "USD", "value": value}
     return event_data

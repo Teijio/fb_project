@@ -10,10 +10,9 @@ class ActivityLog(Base):
     ip_address = Column(INET, unique=True, nullable=False, index=True)
     user_agent = Column(Text, nullable=False)
     pixel = Column(String(1000), nullable=False)
-    token = Column(String(1000), nullable=False)
     fbclid = Column(String(1000), nullable=False)
     fbc = Column(String(1000), nullable=False)
-    fbp = Column(String(1000), nullable=False)
+    fbp = Column(String(1000), nullable=True)
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
 
 

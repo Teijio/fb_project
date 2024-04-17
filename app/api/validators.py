@@ -11,7 +11,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud import activity_log_crud, pixel_token_crud
 from app.models.activity_log import ActivityLog, PixelToken
-from app.schemas.facebook_data import KeitaroStatusIP
 
 
 async def get_pixel_token(pixel: str, session: AsyncSession) -> Optional[PixelToken]:
@@ -42,7 +41,7 @@ def extract_keitaro_info(
     status = parsed_info_url.get("status", [None])[0]
     if ip_address is None or status is None:
         raise HTTPException(status_code=400, detail="IP/status не найдены.")
-    if status not in ["lead", "sell"]:
+    if status not in ["lead", "sale"]:
         raise HTTPException(status_code=400, detail="Неверный статус.")
     try:
         formatted_ip_address = ipaddress.ip_address(ip_address)
