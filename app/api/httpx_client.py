@@ -31,9 +31,6 @@ class Singletonhttpx:
     async def send_data_to_facebook(cls, pixel: str, token: str, data: dict) -> Any:
         client = cls.get_httpx_client()
         url = f"https://graph.facebook.com/v17.0/{pixel}/events?access_token={token}"
-        print(url)
-        print(data)
-        print(type(data))
         try:
             response = await client.post(url, json=data)
             if response.status_code != 200:

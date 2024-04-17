@@ -9,7 +9,6 @@ from app.core.config import settings
 app = FastAPI(title=settings.app_title, on_startup=[on_start_up], on_shutdown=[on_shutdown])
 
 origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -17,8 +16,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
 app.include_router(main_router)
 
 
