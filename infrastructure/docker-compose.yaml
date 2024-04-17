@@ -39,6 +39,7 @@ services:
       - db
     networks:
       - backend
+    command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 7070"]
 
 volumes:
   fb_pgdata:
