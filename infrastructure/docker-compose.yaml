@@ -3,16 +3,16 @@ version: '3.9'
 services:
   db:
     container_name: fb_postgresql
-    image: postgres:16.2-alpine3.18
+    image: postgres:15.3-alpine3.18
     restart: always
     hostname: postgresql
-    env_file: ../.env
+    env_file: .env
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     volumes:
-      - fb_pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     ports:
       - "${DB_PORT}:5432"
     healthcheck:
@@ -24,15 +24,15 @@ services:
       - backend
 
   backend:
-    build: ../.
+    # build: ../.
     container_name: fb_app
     restart: always
-    # image: ridpfrep/fb_project:latest
+    image: ridpfrep/fb_project:latest
     volumes:
       - logs_volume:/app/logs
     ports:
       - "5000:7070"
-    env_file: ../.env
+    env_file: .env
     environment:
       DATABASE_URL: ${DATABASE_URL}
     depends_on:
@@ -42,7 +42,7 @@ services:
     command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 7070"]
 
 volumes:
-  fb_pgdata:
+  pgdata:
   logs_volume:
 
 networks:
