@@ -11,8 +11,8 @@ class Singletonhttpx:
     @classmethod
     def get_httpx_client(cls) -> httpx.AsyncClient:
         if cls.httpx_client is None:
-            timeout = httpx.Timeout(timeout=2)
-            limits = httpx.Limits(max_keepalive_connections=5, max_connections=10)
+            timeout = httpx.Timeout(timeout=5)
+            limits = httpx.Limits(max_connections=100, max_keepalive_connections=20)
             cls.httpx_client = httpx.AsyncClient(
                 timeout=timeout,
                 limits=limits,
