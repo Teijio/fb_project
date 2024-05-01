@@ -6,7 +6,7 @@ services:
     image: postgres:15.3-alpine3.18
     restart: always
     hostname: postgresql
-    env_file: .env
+    env_file: ../.env
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -23,23 +23,23 @@ services:
     networks:
       - backend
 
-  backend:
-    # build: ../.
-    container_name: fb_app
-    restart: always
-    image: ridpfrep/fb_project:latest
-    volumes:
-      - logs_volume:/app/logs
-    ports:
-      - "5000:7070"
-    env_file: .env
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-    depends_on:
-      - db
-    networks:
-      - backend
-    command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 7070"]
+  # backend:
+  #   build: ../.
+  #   container_name: fb_app
+  #   restart: always
+  #   # image: ridpfrep/fb_project:latest
+  #   volumes:
+  #     - logs_volume:/app/logs
+  #   ports:
+  #     - "5000:7070"
+  #   env_file: ../.env
+  #   environment:
+  #     DATABASE_URL: ${DATABASE_URL}
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - backend
+  #   command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 7070"]
 
 volumes:
   pgdata:

@@ -2,8 +2,11 @@ import time
 
 from app.models import ActivityLog
 
+LEAD = "lead"
+SALE = "sale"
 
-def generate_facebook_event_data(activity_log: ActivityLog, status: str, value: int = 200):
+
+def generate_facebook_event_data(activity_log: ActivityLog, status: str = "flow_matched", value: int = 200):
     current_timestamp = int(time.time())
     user_data = {
         "client_ip_address": str(activity_log.ip_address),
@@ -11,12 +14,16 @@ def generate_facebook_event_data(activity_log: ActivityLog, status: str, value: 
         "fbc": activity_log.fbc,
         "fbp": activity_log.fbp,
     }
-    if status == "lead":
-        event_name = "Lead"
-        action_source = "chat"
-    elif status == "sale":
+    if status == LEAD:
+        event_name = "CompleteRegistration"
+        action_source = "website"
+        del user_data["fbp"]
+    elif status == SALE:
         event_name = "Purchase"
         action_source = "website"
+    elif status == "flow_matched":
+        event_name = LEAD.capitalize()
+        action_source = "chat"
 
     event_data = {
         "data": [
@@ -28,6 +35,6 @@ def generate_facebook_event_data(activity_log: ActivityLog, status: str, value: 
             }
         ]
     }
-    if status == "sale":
+    if status in [SALE, LEAD]:
         event_data["data"][0]["custom_data"] = {"currency": "USD", "value": value}
     return event_data

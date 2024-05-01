@@ -2,8 +2,6 @@ from typing import Any, Optional
 
 import httpx
 
-SIZE_POOL_httpx = 100
-
 
 class Singletonhttpx:
     httpx_client: Optional[httpx.AsyncClient] = None
@@ -34,11 +32,10 @@ class Singletonhttpx:
         try:
             response = await client.post(url, json=data)
             if response.status_code != 200:
-                return {"Произошла ошибка" + str(await response.text())}
+                return {"Произошла ошибка во время отправки" + str(await response.text())}
             json_result = response.json()
         except Exception as e:
             return {"Ошибка": e}
-
         return json_result
 
 

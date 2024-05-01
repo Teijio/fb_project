@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, Json
 from pydantic.json_schema import SkipJsonSchema
 from pydantic.networks import IPvAnyAddress
 
@@ -9,9 +9,13 @@ class ActivityLogCreate(BaseModel):
     pixel: str
     fbclid: str
     fbc: str
+    sub_id: str
+    flow: str
     fbp: str = None
+    extra_data: SkipJsonSchema[Json] = None
 
     class Config:
+        extra = "allow"
         from_attributes = True
 
 
