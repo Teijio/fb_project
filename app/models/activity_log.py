@@ -16,7 +16,6 @@ class ActivityLog(Base):
     fbc = Column(String(1000), nullable=False)
     fbp = Column(String(1000), nullable=True)
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
-    sub_id = Column(String(50), nullable=False)
     flow = Column(String(255), nullable=False)
     extra_data = Column(JSONB, nullable=True)
 

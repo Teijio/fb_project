@@ -31,7 +31,6 @@ def upgrade() -> None:
         sa.Column("fbc", sa.String(length=1000), nullable=False),
         sa.Column("fbp", sa.String(length=1000), nullable=True),
         sa.Column("created_at", sa.DateTime(), nullable=False),
-        sa.Column("sub_id", sa.String(length=50), nullable=False),
         sa.Column("flow", sa.String(length=255), nullable=False),
         sa.Column("extra_data", postgresql.JSONB(astext_type=sa.Text()), nullable=True),
         sa.PrimaryKeyConstraint("id"),
