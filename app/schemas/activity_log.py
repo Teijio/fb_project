@@ -9,7 +9,6 @@ class ActivityLogCreate(BaseModel):
     pixel: str
     fbclid: str
     fbc: str
-    sub_id: str
     flow: str
     fbp: str = None
     extra_data: SkipJsonSchema[Json] = None
