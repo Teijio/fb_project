@@ -64,10 +64,10 @@ def extract_keitaro_info(
 async def match_activity_log_and_flow(
     ip_address: ipaddress, session: AsyncSession
 ) -> Optional[tuple[ActivityLog, FlowParams]]:
-    activity_log = await get_activity_log_by_ip(ip_address, session)
+    activity_log = await activity_log_crud.get_by_attribute("ip_address", ip_address, session)
+    if activity_log is None:
+        return None, None
     flow_params = await flow_params_crud.get_by_attribute("flow", activity_log.flow, session)
-    if not flow_params:
-        return activity_log, None
     return activity_log, flow_params
 
 

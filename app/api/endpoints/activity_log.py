@@ -83,8 +83,7 @@ async def find_flow(ip_address: IPvAnyAddress, app: str, session: AsyncSession =
         url_for_redirect = f"{URL}{flow.url}?{params}"
         logger.info(f"redirect_url_FLOW >>> {url_for_redirect}")
         return RedirectResponse(url_for_redirect)
-    else:
-        application = await get_application(app, session)
-        url_for_redirect = f"{URL}{application.url}"
-        logger.info(f"redirect_url_APP >>> {url_for_redirect}")
-        return RedirectResponse(url_for_redirect)
+    application = await get_application(app, session)
+    url_for_redirect = f"{URL}{application.url}"
+    logger.info(f"redirect_url_APP >>> {url_for_redirect}")
+    return RedirectResponse(url_for_redirect)
