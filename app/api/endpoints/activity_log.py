@@ -54,13 +54,11 @@ async def create_new_request_info(
     return new_activity_log
 
 
-@router.post("/find_fb/")
-async def find_request_info(
-    info_url: str = Body(...),
-    session: AsyncSession = Depends(get_async_session),
-):
-    logger.info(f"keitaro_URL >>> {info_url}")
-    ip_address, status = extract_keitaro_info(info_url)
+# async def find_request_info(info_url: str = Body(...), session: AsyncSession = Depends(get_async_session)):
+@router.get("/find_fb/")
+async def find_request_info(status: str, ip_address: IPvAnyAddress, session: AsyncSession = Depends(get_async_session)):
+    # logger.info(f"keitaro_URL >>> {info_url}")
+    # ip_address, status = extract_keitaro_info(info_url)
     activity_log = await get_activity_log_by_ip(ip_address, session)
     pixel_token = await get_pixel_token(activity_log.pixel, session)
     facebook_data = generate_facebook_event_data(activity_log, status)
