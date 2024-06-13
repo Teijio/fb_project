@@ -76,3 +76,5 @@ async def get_application(app: str, session: AsyncSession) -> Optional[Applicati
     if not application:
         raise HTTPException(status_code=404, detail="app не найден")
     return application
+
+# async def get_activity_log_flag(app)

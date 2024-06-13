@@ -14,14 +14,14 @@ def generate_facebook_event_data(activity_log: ActivityLog, status: str = "flow_
         "fbc": activity_log.fbc,
         "fbp": activity_log.fbp,
     }
-    if status == LEAD:
+    if status == LEAD: # flag 2
         event_name = "CompleteRegistration"
         action_source = "website"
         del user_data["fbp"]
-    elif status == SALE:
+    elif status == SALE: # flag 3
         event_name = "Purchase"
         action_source = "website"
-    elif status == "flow_matched":
+    elif status == "flow_matched": # flag 1
         event_name = LEAD.capitalize()
         action_source = "chat"
 

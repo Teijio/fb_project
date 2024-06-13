@@ -27,6 +27,7 @@ router = APIRouter()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+# handler = logging.FileHandler(settings.logs_file_path_local)  # переключить на local
 handler = logging.FileHandler(settings.logs_file_path_prod)  # переключить на прод
 handler.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
@@ -54,20 +55,26 @@ async def create_new_request_info(
     return new_activity_log
 
 
-# async def find_request_info(info_url: str = Body(...), session: AsyncSession = Depends(get_async_session)):
 @router.get("/find_fb/")
 async def find_request_info(
     status: str, ip_address: IPvAnyAddress, session: AsyncSession = Depends(get_async_session)
 ):
-    # logger.info(f"keitaro_URL >>> {info_url}")
-    # ip_address, status = extract_keitaro_info(info_url)
     activity_log = await get_activity_log_by_ip(ip_address, session)
     pixel_token = await get_pixel_token(activity_log.pixel, session)
-    facebook_data = generate_facebook_event_data(activity_log, status)
-    result = await Singletonhttpx.send_data_to_facebook(pixel_token.pixel, pixel_token.token, facebook_data)
-    logger.info(f"facebook_data_keitaro_POST >>> {facebook_data}")
-    logger.info(f"facebook_RESULT >>> {result}")
-    return result
+
+    if activity_log.flag == 3:
+        return "Флаг уже установлен"
+    await activity_log_crud.update_flag_by_ip(ip_address, session, status)
+    activity_log.log = 1 if status == "lead" else 2 if status == "sale" else activity_log.log
+    
+    if (activity_log.log == 1 and status == "lead") or (activity_log.log == 2 and status == "sale"):
+        facebook_data = generate_facebook_event_data(activity_log, status)
+        result = await Singletonhttpx.send_data_to_facebook(pixel_token.pixel, pixel_token.token, facebook_data)
+        logger.info(f"facebook_data_keitaro_POST >>> {facebook_data}")
+        logger.info(f"facebook_RESULT >>> {result}")
+        return result   
+    return "Ошибка юзера"
+
 
 
 @router.get("/find_flow/", response_class=RedirectResponse)
@@ -75,6 +82,11 @@ async def find_flow(ip_address: IPvAnyAddress, app: str, session: AsyncSession =
     activity_log, flow = await match_activity_log_and_flow(ip_address, session)
     if flow:
         pixel_token = await get_pixel_token(activity_log.pixel, session)
+        
+        if activity_log.flag is not None:
+            return "Флаг уже установлен"
+        await activity_log_crud.update_flag_by_ip(ip_address, session)
+        
         facebook_data = generate_facebook_event_data(activity_log)
         result = await Singletonhttpx.send_data_to_facebook(pixel_token.pixel, pixel_token.token, facebook_data)
         logger.info(f"facebook_data_flow_POST >>> {facebook_data}")

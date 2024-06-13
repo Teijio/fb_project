@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, String, Text
+from sqlalchemy import Column, DateTime, String, Text, Integer
 from sqlalchemy.dialects.postgresql import INET, JSONB
 
 from app.core.database import Base
@@ -18,6 +18,7 @@ class ActivityLog(Base):
     created_at = Column(DateTime, default=datetime.now(), nullable=False)
     flow = Column(String(255), nullable=False)
     extra_data = Column(JSONB, nullable=True)
+    flag = Column(Integer, nullable=True)
 
     @property
     def params_format(self):
