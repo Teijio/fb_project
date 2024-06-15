@@ -66,15 +66,14 @@ async def find_request_info(
         return "Флаг уже установлен"
     await activity_log_crud.update_flag_by_ip(ip_address, session, status)
     activity_log.log = 1 if status == "lead" else 2 if status == "sale" else activity_log.log
-    
+
     if (activity_log.log == 1 and status == "lead") or (activity_log.log == 2 and status == "sale"):
         facebook_data = generate_facebook_event_data(activity_log, status)
         result = await Singletonhttpx.send_data_to_facebook(pixel_token.pixel, pixel_token.token, facebook_data)
         logger.info(f"facebook_data_keitaro_POST >>> {facebook_data}")
         logger.info(f"facebook_RESULT >>> {result}")
-        return result   
+        return result
     return "Ошибка юзера"
-
 
 
 @router.get("/find_flow/", response_class=RedirectResponse)
@@ -82,15 +81,15 @@ async def find_flow(ip_address: IPvAnyAddress, app: str, session: AsyncSession =
     activity_log, flow = await match_activity_log_and_flow(ip_address, session)
     if flow:
         pixel_token = await get_pixel_token(activity_log.pixel, session)
-        
-        if activity_log.flag is not None:
-            return "Флаг уже установлен"
-        await activity_log_crud.update_flag_by_ip(ip_address, session)
-        
-        facebook_data = generate_facebook_event_data(activity_log)
-        result = await Singletonhttpx.send_data_to_facebook(pixel_token.pixel, pixel_token.token, facebook_data)
-        logger.info(f"facebook_data_flow_POST >>> {facebook_data}")
-        logger.info(f"facebook_RESULT >>> {result}")
+
+        if activity_log.flag is None:
+            await activity_log_crud.update_flag_by_ip(ip_address, session)
+
+            facebook_data = generate_facebook_event_data(activity_log)
+            result = await Singletonhttpx.send_data_to_facebook(pixel_token.pixel, pixel_token.token, facebook_data)
+            logger.info(f"facebook_data_flow_POST >>> {facebook_data}")
+            logger.info(f"facebook_RESULT >>> {result}")
+
         params = urllib.parse.urlencode(activity_log.params_format)
         url_for_redirect = f"{URL}{flow.url}?{params}"
         logger.info(f"redirect_url_FLOW >>> {url_for_redirect}")
